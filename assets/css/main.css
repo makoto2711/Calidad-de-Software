@@ -1,0 +1,138 @@
+.fixed {
+    position: fixed;
+    top: 0;
+    z-index: 2;
+    width: 100%;
+}
+
+.cont {
+    text-align: center;
+    background: aliceblue;
+    padding: 3px 10px;
+    border-radius: 50%;
+    font-size: 16px;
+    position: absolute;
+    right: 40px;
+    top: 12px;
+}
+
+.open,
+.close {
+    cursor: pointer;
+}
+
+
+.fs {
+    font-size: 26px;
+}
+
+.background {
+    background: #a33bc5;
+    border-radius: 0 0 12px 12px;
+}
+
+
+.design {
+    background: cadetblue;
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 0 8px #000;
+}
+
+.design p {
+    filter: drop-shadow(0px 0px 2px #000);
+}
+
+
+
+.boton {
+    filter: drop-shadow(0px 0px 2px black);
+    background: #3a3732;
+    border-color: #3a3732;
+    color: #fff;
+}
+
+.boton:hover {
+    color: #fff;
+}
+
+
+.border-top {
+    border-radius: 10px 10px 0 0;
+}
+
+.cuerpo {
+    box-shadow: 0 0 8px #000;
+    border-radius: 10px 10px 10px 10px;
+}
+
+.cuerpo:hover {
+    box-shadow: 0 0 12px #000;
+    transition: all .1s ease;
+}
+
+
+.aside {
+    position: fixed;
+    width: 30%;
+    right: -100%;
+    top: 0;
+    background-color: #b9955a;
+    z-index: 3;
+    box-shadow: 0 0 12px #000;
+    transition: all .3s;
+}
+
+
+@media screen and (max-width: 992px) {
+    .aside {
+        width: 100%;
+        right: -100%;
+    }
+}
+
+
+.close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 0 12px;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+.close::after {
+    content: "x";
+    font-size: 20px;
+    vertical-align: super;
+    font-weight: 600;
+}
+
+
+.plus,
+.minus {
+    font-size: 20px;
+    font-weight: 500;
+    padding: 0px 8px;
+    border-radius: 50%;
+    border: none;
+    height: 30px;
+    width: 30px;
+    box-shadow: 0 0 5px #000;
+}
+
+
+.cantidad {
+    font-size: 20px;
+    text-shadow: 0 0 5px #000;
+    color: #fff;
+}
+
+.fw {
+    font-weight: 600;
+}
+
+
+.bg-row {
+    background-color: #ed143d;
+}
