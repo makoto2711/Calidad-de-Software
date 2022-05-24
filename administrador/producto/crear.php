@@ -27,7 +27,7 @@ include "../asset/header.php";
 
     <div class="row justify-content-center">
         <div class="col-lg-5">
-        <form action="crear_procesar.php?accion=c" id="form" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <form action="crear_procesar.php" id="form" method="POST" enctype="multipart/form-data" autocomplete="off">
             <div class="row">
                 <div class="col-md-12 mb-3">
                     <div class="form-group"> 
@@ -53,12 +53,12 @@ include "../asset/header.php";
                 </div>
                 <div class="col-md-6 mb-3">
                     <div class="form-group"> 
-                        <input id="cantidad" class="form-control" type="number" name="cantidad" placeholder="Cantidad" required>
+                        <input id="cantidad" class="form-control" type="number"   name="cantidad" placeholder="Cantidad" required>
                     </div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <div class="form-group"> 
-                        <input id="precio" class="form-control" type="decimal" name="precio" placeholder="Precio" required>
+                        <input id="precio" class="form-control" type="number"   name="precio" placeholder="Precio" required>
                     </div>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -93,28 +93,67 @@ include "../asset/header.php";
         })
         
         form.addEventListener("submit", e => 
-        {
-           let enviar = true
-            
-            const inputs = document.querySelectorAll("input")   
-            
+        { 
+            e.preventDefault()
+
+            const inputs = document.querySelectorAll("input");   
+            let enviar = false
+
             inputs.forEach(item => 
             {
                 if (item.value.trim() == "") 
                 { 
-                    alert("Falto " +item.placeholder )
-                    enviar = false
+                  enviar = false
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Rellene todos los campos!'
+                    })
                 }
                 else
                 {
                     enviar = true
                 }
             });
-
-            if (!enviar) e.preventDefault() 
-
+            
+            if (enviar)  
+            {
+                const datos = new FormData(form)
+                enviar_form(datos)
+            }
 
         })
+
+        async function enviar_form(datos) 
+        {
+            const data = await fetch("crear_procesar.php", {
+                                    method: "POST",
+                                    body: datos
+                                });
+
+            const rpta = await data.json();
+            
+            if (rpta == "nuevo") 
+            {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Correcto',
+                    text: 'Se agrego el nuevo producto!',
+                    })    
+                
+                    form.reset()
+            }
+            else if(rpta == "existente")
+            {
+ 
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Incorrecto',
+                    text: 'Ya existe un producto con esas caracteristicas!',
+                    })    
+            }
+            
+        }
 
 
     }();

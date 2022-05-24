@@ -34,7 +34,7 @@ if(isset($_GET['id'])){
 
     <div class="row justify-content-center mt-4">
             <div class="col-lg-5">
-            <form action="editar_procesar.php?accion=e" method="POST" id="formEditar"  enctype="multipart/form-data" autocomplete="off">
+            <form action="editar_procesar.php" method="POST" id="formEditar"  enctype="multipart/form-data" autocomplete="off">
                 <div class="row">
                     <div class="col-12 mb-3">
                         <div class="form-group"> 
@@ -102,6 +102,46 @@ if(isset($_GET['id'])){
     !function() 
     {
         const formEditar = document.getElementById("formEditar")
+
+        formEditar.addEventListener("submit", (e)=>
+        {
+            e.preventDefault();
+
+            const datos = new FormData(formEditar)
+            enviar_form(datos)
+        });
+
+
+          async function enviar_form(datos) 
+        {
+            const data = await fetch("editar_procesar.php", {
+                                    method: "POST",
+                                    body: datos
+                                });
+
+            const rpta = await data.json();
+            
+            if (rpta == "actualizado") 
+            {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Correcto',
+                    text: 'Se actualizo el producto!',
+                    })    
+                
+            }
+            else if(rpta == "existente")
+            {
+ 
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Incorrecto',
+                    text: 'Ya existe un producto con esas caracteristicas!',
+                    })    
+            }
+            
+        }
+
 
         console.log("hola mundo");
 
