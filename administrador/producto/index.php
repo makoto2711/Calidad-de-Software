@@ -45,7 +45,9 @@ include "../asset/header.php";
                     </tr>
                 </thead>
                 <tbody style="border: 10px #000" id="filas_tabla" >
-                    <?php
+                
+                <!--
+                   <?php
                     $sql = "SELECT p.idProducto,p.nombre as Pnombre,p.descripcion,pr.nombre as PRnombre, p.stock, p.precio, i.foto FROM producto p inner JOIN presentacion pr on p.idPresentacion = pr.idPresentacion inner JOIN imagen i on p.idProducto = i.idProducto where p.estado = 1";
                     $query = mysqli_query($conexion, $sql);
                     
@@ -63,8 +65,24 @@ include "../asset/header.php";
                             </td>
                         </tr>
                     <?php } ?>
+                    -->
                 </tbody>
             </table>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+ 
         </div>
     </div>
 </div>
@@ -101,7 +119,7 @@ include "../asset/header.php";
             const filas_tabla = document.getElementById("filas_tabla")
             const $template = document.getElementById("template").content
             const fragmento = document.createDocumentFragment()
-            let clonar = null
+            let clonar = null, cont = 0 
 
             function refrescar() 
             {
@@ -146,10 +164,6 @@ include "../asset/header.php";
                 filas_tabla.appendChild(fragmento)      
             }
 
-           
-
-
-
             
             buscar.addEventListener("input", async (e)=>{
                  const search = buscar.value
@@ -158,17 +172,21 @@ include "../asset/header.php";
             });
 
 
+        function prepareList() 
+        {
+            let countOfPages
+            for (count = 0; count< arr_data.length; count++)
+            {
+                    countOfPages = getCountOfPages();  
+            }
 
-
-
-
-
-
-
-
-
-
-
+                    console.log(countOfPages);
+        }
+       
+        function getCountOfPages() 
+        {
+            return Math.ceil(arr_data.length / 5);
+        }
 
 
 
@@ -176,6 +194,16 @@ include "../asset/header.php";
 
             window.addEventListener("click", async (e)=> 
             {
+
+                if (e.target.classList.contains("page-link")) 
+                {
+                      console.log("numero");
+                    prepareList()
+                    
+                }
+
+
+
 
                 if (e.target.hasAttribute("href") && e.target.classList.contains("btn-danger") )  
                 { 
@@ -229,9 +257,63 @@ include "../asset/header.php";
     }();
 
 </script>
+ 
+
+ </body>
+ </html>
 
 
 
 
-                    </body>
-                    </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

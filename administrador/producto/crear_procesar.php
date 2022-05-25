@@ -22,7 +22,8 @@ else
     $destino = "../../imgs/" . $foto;
 
 
-    $sql = "INSERT INTO producto (nombre, descripcion, idPresentacion, stock, precio) VALUES ('$nombre', '$descripcion', $presentacion, $cantidad, $precio)";
+    $sql = "INSERT INTO producto (nombre, descripcion, idPresentacion, stock, precio) 
+            VALUES ('$nombre', '$descripcion', $presentacion, $cantidad, $precio)";
     $query = mysqli_query($conexion,$sql);
 
     $idProd = $conexion->insert_id;

@@ -71,27 +71,35 @@
         const aside = document.getElementById("aside")
 
 
-        window.addEventListener("click", e => {
+        window.addEventListener("click", async e => {
             /* console.log(e.target); */
 
             if (e.target.classList.contains("close")) {
                 aside.style.right = `-${aside.clientWidth + 10}px`
             }
-            else if (e.target.classList.contains("open")) {
+            else if (e.target.classList.contains("open")) 
+            {
                 aside.style.right = "0"
             }
-            else if (e.target.classList.contains("plus")) {
+            else if (e.target.classList.contains("plus")) 
+            {
                 cant_products = e.target.nextElementSibling
-                cant_products.textContent = parseInt(cant_products.textContent) + 1
-
+              
                 const row_id = e.target.parentNode.parentNode.parentNode.parentNode.id
 
-                for (const item of items)
-                    if (item.id == row_id) item.cont += 1
+                const info_row = await detalle(row_id)
+                
+                if ( parseInt(cant_products.textContent)  < info_row[0].stock ) 
+                {
+                    cant_products.textContent = parseInt(cant_products.textContent) + 1      
+                    for (const item of items)
+                        if (item.id == row_id) item.cont += 1
 
-                actualizar_Carrito(items)
+                    actualizar_Carrito(items)
 
-                console.log(items);
+                    console.log(items);
+                }
+                
             }
             else if (e.target.classList.contains("minus")) {
                 cant_products = e.target.previousElementSibling
@@ -172,10 +180,10 @@
                 productos_total += parseInt(item.cont)
                 guardar_total += parseFloat(item.price) * parseInt(item.cont)
             });
-
+            
             itemsComprados.appendChild(fragmento);
 
-            total.textContent = "S/. " + guardar_total
+            total.textContent = "S/. " + guardar_total.toFixed(2)
             pro_total.textContent = productos_total
         }
         else
@@ -225,7 +233,7 @@
         title_modal.textContent = data[0].nombre
         description_modal.textContent = data[0].descripcion
         presentacion_modal.textContent = data[0].PRnombre
-        price_modal.textContent = `S/. ${data[0].precio}`
+        price_modal.textContent = `Precio: S/. ${data[0].precio}`
         stock_modal.textContent = `Stock: ${data[0].stock
 }`
     }

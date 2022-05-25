@@ -19,7 +19,9 @@ session_start();
 
    <nav class="navbar navbar-light bg-dark mb-5 py-3 fixed">
         <div class="container-fluid">
-          <a class="navbar-brand text-white" href="#">Tienda</a>
+          <a class="navbar-brand text-white" href="#">
+              <img src="./imgs/logo.jpeg" width="50" alt="">
+          </a>
 
           
       <?php

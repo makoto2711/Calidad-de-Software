@@ -64,11 +64,12 @@ if(isset($_POST['login'])){
                 }
             }
         }else{
-            echo "Contraseña incorrecta";
+            $_SESSION['msg_log'] = "Contraseña incorrecta";
         }
         
     }else{
-        echo "No existe usuario";
+        $_SESSION['msg_log'] = "Usuario incorrecto";
+        //echo "No existe usuario";
     }
 }
 ?>
@@ -81,6 +82,7 @@ if(isset($_POST['login'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
     .bg-login
@@ -117,9 +119,31 @@ if(isset($_POST['login'])){
 </form>
 </div>
 
+<?php 
+ if(isset($_SESSION['msg_log']) && $_SESSION['msg_log']!="" ){
+    $msg = $_SESSION['msg_log'];
+    echo "<script type='text/javascript'>
+                Swal.fire({
+                    icon: 'error',
+                    title: '<span style="."color:black".">$msg</span>',
+                    background: 'white',
+                    iconColor: 'black',
+                    confirmButtonColor: 'RED',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false,
+                    stopKeydownPropagation: true,
+                    customClass:{
+                        popup: 'alerta_contenedor'
+                    }
+                })
+            </script> ";
+            unset($_SESSION['msg_log']);
+ }
+ ?>
+
 </main>
 
 
 </body>
 </html>
-
