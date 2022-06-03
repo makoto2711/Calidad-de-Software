@@ -28,7 +28,7 @@ if(isset($_POST['login'])){
     $user = $_POST['id'];
     $pass = $_POST['pass'];
        /*  echo $user; */
-    $sql = "SELECT usuario,contraseña,nombre,idRol from usuario where usuario = '$user'";
+    $sql = "SELECT idUsuario,usuario,contraseña,nombre,idRol from usuario where usuario = '$user'";
     $resultado = mysqli_query($conexion,$sql);
     $num = mysqli_num_rows($resultado);
     
@@ -39,6 +39,7 @@ if(isset($_POST['login'])){
         $pass_c = md5($pass);
         
         if($pass_bd == $pass_c){
+            $_SESSION['idUser'] = $row['idUsuario'];//guardas variable en la sessiion
             $_SESSION['id'] = $row['usuario'];//guardas variable en la sessiion
             $_SESSION['nombre'] = $row['nombre'];//guardas variable en la sessiion
             $_SESSION['rol'] = $row['idRol'];//guardas variable en la sessiion
@@ -115,6 +116,7 @@ if(isset($_POST['login'])){
         <div class="text-center">
             <input type="hidden" name="login" value="login">
             <button type="submit" class="btn btn-success">Iniciar sesión</button>
+            <a href="cliente/registro.php" class="btn btn-primary"> Registro </a>
         </div> 
 </form>
 </div>
@@ -147,3 +149,4 @@ if(isset($_POST['login'])){
 
 </body>
 </html>
+
