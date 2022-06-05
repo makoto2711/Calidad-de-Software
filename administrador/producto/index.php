@@ -32,7 +32,7 @@ include "../asset/header.php";
 
     <div class="col-lg-12">
         <div class="table-responsive">
-            <table class="table table-hover table-bordered" style="width: 100%;">
+            <table class="table table-hover table-bordered" id="tabla" style="width: 100%;">
                 <thead class="thead-dark" style="border: 10px #000">
                     <tr>
                         <th>Imagen</th>
@@ -70,16 +70,9 @@ include "../asset/header.php";
             </table>
 
             <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                    </li>
+                <ul class="pagination justify-content-center" id="paginacion">
+             
+                  
                 </ul>
             </nav>
  
@@ -109,25 +102,96 @@ include "../asset/header.php";
 
 <script>
 
+ 
+
     !function() 
     {
+
+        let arrComplejo = []
+        let hola = []
+        let pag = ""
+        let primerI = 0
+        let contItems = 5;
+
+        let activar = false
+
+
         document.addEventListener("DOMContentLoaded", main)
 
         async function main() 
         {
             const buscar = document.getElementById("buscar") 
+            const paginacionT = document.getElementById("paginacion")
             const filas_tabla = document.getElementById("filas_tabla")
             const $template = document.getElementById("template").content
             const fragmento = document.createDocumentFragment()
             let clonar = null, cont = 0 
 
+
+              
+                async function paginacion(arr_data)
+                {
+                    paginacionT.innerHTML = ""
+                    pag = ""
+
+                    for (let i = 0; i <  arr_data.length/5; i++) 
+                        {
+                            hola = arr_data.slice(primerI,contItems)
+                            
+                            arrComplejo.push(hola)
+ 
+
+                            console.log("primer: " + primerI);
+                            console.log("cont: " + contItems);
+                            primerI = contItems
+                            contItems += 5
+                            
+                            pag += `<li class="page-item"><a class="page-link" href="#">${i+1}</a></li>`
+                        
+                            paginacionT.innerHTML = pag
+                        }
+                        console.log(arrComplejo);
+            
+
+                        mostrarPag(arrComplejo,0) 
+                }  
+
+                async function mostrarPag(arr_data, i) 
+                {
+                     refrescar();
+                   
+                     arr_data[i].forEach(item => 
+                    {
+                        clonar =  $template.cloneNode(true)
+                        clonar.querySelector(".img-thumbnail").src = `../../imgs/${item.foto}`
+                        clonar.querySelector(".nombre").textContent = item.Pnombre
+                        clonar.querySelector(".descripcion").textContent = item.descripcion
+                        clonar.querySelector(".presentacion").textContent = item.PRnombre
+                        clonar.querySelector(".stock").textContent = item.stock
+                        clonar.querySelector(".precio").textContent = item.precio
+                        clonar.querySelector(".btn-warning").href = `editar.php?id=${item.idProducto}`
+                        clonar.querySelector(".btn-danger").href  = `eliminar_procesar.php?accion=d&id=${item.idProducto}`
+
+                        fragmento.appendChild(clonar)
+                    });
+
+                    filas_tabla.appendChild(fragmento)    
+
+                    
+                }
+
+
+
+
             function refrescar() 
             {
                 const filas = document.getElementById("filas_tabla")
-                while (filas.firstChild) filas.removeChild(filas.firstChild)
+                while (filas.firstChild) filas.removeChild(filas.firstChild) 
             }
 
+      
 
+            
             async function items_list() 
             {
                 const rpta = await fetch("listar_items.php")
@@ -144,8 +208,8 @@ include "../asset/header.php";
             async function show_table(arr_data) 
             {
                   
-                refrescar();
-                
+                refrescar(); 
+
                 arr_data.forEach(item => 
                 {
                     clonar =  $template.cloneNode(true)
@@ -162,12 +226,26 @@ include "../asset/header.php";
                 });
 
                 filas_tabla.appendChild(fragmento)      
+
+
+                if (!activar) {
+                    paginacion(arr_data) 
+                }
+
+
             }
 
             
             buscar.addEventListener("input", async (e)=>{
-                 const search = buscar.value
-                 const arr_filtrado = arr_data.filter(item => item.Pnombre.toLowerCase().search(search) != -1)  
+                activar = true
+                const search = buscar.value.toLowerCase()
+                const arr_filtrado = arr_data.filter(item => item.Pnombre.toLowerCase().search(search) != -1)  
+                
+                if (buscar.value.trim() == "")  
+                {
+                    activar = false    
+                }
+
                 show_table(arr_filtrado)
             });
 
@@ -180,12 +258,12 @@ include "../asset/header.php";
                     countOfPages = getCountOfPages();  
             }
 
-                    console.log(countOfPages);
+            console.log(countOfPages);
         }
        
         function getCountOfPages() 
         {
-            return Math.ceil(arr_data.length / 5);
+            return Math.ceil(arr_data.length / 2);
         }
 
 
@@ -195,12 +273,22 @@ include "../asset/header.php";
             window.addEventListener("click", async (e)=> 
             {
 
-                if (e.target.classList.contains("page-link")) 
+                if (e.target.classList.contains("page-item") || e.target.classList.contains("page-link") ) 
                 {
-                      console.log("numero");
-                    prepareList()
+                    console.log("numero");
+                 
+
+                    const pos_pag = parseInt(e.target.textContent)-1
+
+                    mostrarPag(arrComplejo, pos_pag) 
+
+                  
                     
-                }
+
+
+
+                    
+                } 
 
 
 

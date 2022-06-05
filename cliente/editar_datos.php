@@ -27,6 +27,10 @@ $usuario = mysqli_query($conexion, $query);
 </head>
 <body>
     
+<nav class="p-3 bg-dark">
+    <a class="btn btn-secondary" href="perfil.php">Regresar</a>
+</nav>
+
 
 <div class="container mt-5">
     <div class="row justify-content-center">

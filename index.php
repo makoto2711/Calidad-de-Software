@@ -14,13 +14,22 @@ session_start();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/main.css">
     <script defer src="assets/js/main.js"></script>
+
+    <style>
+        .radius
+        {
+            border-radius:50%;
+            height:50px;
+        }
+    </style>
+
 </head>
 <body>
 
    <nav class="navbar navbar-light bg-dark mb-5 py-3 fixed">
         <div class="container-fluid">
           <a class="navbar-brand text-white" href="#">
-              <img src="./imgs/logo.jpeg" width="50" alt="">
+              <img   src="./imgs/logo.jpeg" width="50" alt="">
           </a>
 
           
@@ -33,14 +42,34 @@ if(!isset($_SESSION['id'])){
 }
 if(isset($_SESSION['id'])){//verifica si hay logeado
 ?>
-   <a class="btn btn-primary" href='logout.php'>Cerrar sesion</a>
+<!--     <a class="btn btn-primary" href='logout.php'>Cerrar sesion</a> -->
+    <div class="dropdown">
+  <!--       <span><?php echo $_SESSION['nombre'] ?></span> -->
+       <a>  
+           <img class="radius" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fvectorified.com%2Fimages%2Fdefault-user-icon-33.jpg&f=1&nofb=1" alt="">
+       </a> 
+        <div class="dropdown-content p-0">
+            <ul class="list-group">
+               <li class="list-group-item">
+                   <a class="btn p-0" href="cliente/perfil.php">Mi perfil</a>
+               </li> 
+               <li class="list-group-item">
+                   <a class="btn p-0" href="logout.php">Cerrar sesion</a>
+               </li> 
+            </ul>
+            
+        </div>
+    </div>
 <?php
 }
- ?>
-          <section>
-                <span class="fa fa-shopping-bag text-white fs me-5 open"></span>
-                <span class="cont open" id="contador">0</span> 
-          </section>
+
+
+ ?> 
+         
+            <section>
+                    <span class="fa fa-shopping-bag text-white fs me-5 open"></span>
+                    <span class="cont open" id="contador">0</span> 
+            </section> 
 
         </div>
     </nav>   

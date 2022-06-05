@@ -23,6 +23,10 @@ require_once "../config/conectar.php";
 </head>
 <body>
 
+<nav class="p-3 bg-dark">
+	<a class="btn btn-secondary" href="perfil.php">Regresar</a>
+</nav>
+
 <div class="container mt-5">
 	<div class="row justify-content-center">
 		<div class="col-6">
@@ -55,7 +59,7 @@ require_once "../config/conectar.php";
 					<input type="text" class="form-control" name="referencia" placeholder="Cerca de.., Enfrente de.." >
 					
 					<div class="text-center mt-3">
-						<input type="submit" class="btn btn-success w-100" value="Registrar">
+						<input type="submit" class="btn btn-success w-100 fw-bold" value="Registrar">
 					</div>
 
 				</form>

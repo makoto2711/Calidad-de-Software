@@ -36,13 +36,24 @@ foreach ($direccion as $d){
 	src="https://code.jquery.com/jquery-3.3.1.min.js"
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	crossorigin="anonymous"></script>
-	
+	  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+   
 </head>
 <body>
 
-	<form action="edit_dir_proc.php?id=<?php echo $id ?>" method="post">
+
+<nav class="p-3 bg-dark">
+	<a class="btn btn-secondary" href="perfil.php">Regresar</a>
+</nav>
+
+<div class="container mt-5">
+	<div class="row justify-content-center">
+		<div class="col-6">
+
+			<form action="edit_dir_proc.php?id=<?php echo $id ?>" method="post">
 		<label>Departamento </label> 
-		<select id="selDepartamento" name="departamento" required>
+		<select id="selDepartamento" class="form-select" name="departamento" required>
 			<option value="0"> - Seleccione - </option>
 			<?php
 			$departamentos = mysqli_query($conexion, "SELECT * FROM departamento");
@@ -52,7 +63,7 @@ foreach ($direccion as $d){
 		</select>
 			<br>
 		<label>Provincias</label>
-		<select id="selProvincias" name="provincia" required>
+		<select id="selProvincias" class="form-select" name="provincia" required>
 			<option value="0"> - Seleccione - </option>
 			<?php
 			$provincias = mysqli_query($conexion, "SELECT id,nombre FROM provincia where idDepartamento=$departamento");
@@ -62,7 +73,7 @@ foreach ($direccion as $d){
 		</select>
 		<br>
 		<label>Distritos</label>
-		<select id="selDistritos" name="distrito" required>
+		<select id="selDistritos" class="form-select" name="distrito" required>
 			<option value="0"> - Seleccione - </option>
 			<?php
 			$distritos = mysqli_query($conexion, "SELECT id,nombre FROM distrito where idProvincia=$provincia");
@@ -72,17 +83,27 @@ foreach ($direccion as $d){
 		</select>
 		<br>
 		<label>Direccion: </label>
-		<input type="text" value="<?php echo $direccion ?>" name="direccion" required> 
+		<input type="text" class="form-control" value="<?php echo $direccion ?>" name="direccion" required> 
 		<br>
 		<label>Referencia: </label>
-		<input type="text" value="<?php echo $referencia ?>" name="referencia" required>
+		<input type="text" class="form-control" value="<?php echo $referencia ?>" name="referencia" required>
 		<br>
-		<input type="submit" value="Guardar">
+		
+		<div class="mt-3">
+			<input class="w-100 btn btn-success"  type="submit" value="Guardar">
+		</div>
+
 	</form>
 
-</body>
-</html>
-<script type="text/javascript">
+		</div>
+	</div>
+</div>		
+
+	 
+
+
+
+	<script type="text/javascript">
 	$(document).ready(function(){
 		$('#selDepartamento').val(<?php echo $departamento ?>);
 		$('#selProvincias').val(<?php echo $provincia ?>);
@@ -120,3 +141,7 @@ foreach ($direccion as $d){
 		});
 	}
 </script>
+ 
+
+</body>
+</html>
