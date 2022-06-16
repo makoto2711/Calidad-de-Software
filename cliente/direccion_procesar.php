@@ -1,11 +1,10 @@
 <?php 
 require_once "../config/conectar.php";
 if(isset($_POST['idDepartamento'])){
-    $idDepartamento=$_POST['idDepartamento'];
+    $id_departamento=$_POST['idDepartamento'];
 
         $sql="SELECT id, nombre from provincia 
-            where idDepartamento='$idDepartamento'";
-        //$cadena="";
+            where idDepartamento='$id_departamento'";
         $provincias =mysqli_query($conexion,$sql);
 
         $cadena="<option value='0'> - Seleccione - </option>";
@@ -20,10 +19,10 @@ if(isset($_POST['idDepartamento'])){
 }
 
 if(isset($_POST['idProvincia'])){
-    $idProvincia=$_POST['idProvincia'];
+    $id_provincia=$_POST['idProvincia'];
 
         $sql="SELECT id, nombre from distrito 
-            where idProvincia='$idProvincia'";
+            where idProvincia='$id_provincia'";
 
         $distritos =mysqli_query($conexion,$sql);
 
@@ -35,8 +34,3 @@ if(isset($_POST['idProvincia'])){
 
         echo $cadena;
 }
-
-
-	
-
-?>

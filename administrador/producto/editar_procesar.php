@@ -12,12 +12,12 @@ $mensaje = null;
 
     $img = $_FILES['foto'];
     $name = $img['name'];
-    $tmpname = $img['tmp_name'];
+    $tmp_name = $img['tmp_name'];
 
     $sql = "UPDATE producto SET nombre = '$nombre', descripcion = '$descripcion', idPresentacion = $presentacion, stock= $cantidad, precio=$precio WHERE idProducto=$id";
     $query = mysqli_query($conexion, $sql);
 
-    if($tmpname != "")
+    if($tmp_name != "")
     {//si no hay imagen que modificar
         if($query)
         {// si se actualizo los datos del producto
@@ -27,34 +27,29 @@ $mensaje = null;
             $destino = "../../imgs/" . $foto;
 
             $sql_f = mysqli_query($conexion, "SELECT foto from imagen where idProducto = $id");//extraes el nombre de la imagen en la bd
-            $fotoURL = mysqli_fetch_assoc($sql_f);
+            $foto_url = mysqli_fetch_assoc($sql_f);
             
             $sql = "UPDATE imagen set foto = '$foto' where idProducto = $id";
             $query = mysqli_query($conexion, $sql);
-                if(isset($fotoURL['foto']) && file_exists("../../imgs/".$fotoURL['foto'])){
-                    unlink("../../imgs/".$fotoURL['foto']);
+                if(isset($foto_url['foto']) && file_exists("../../imgs/".$foto_url['foto'])){
+                    unlink("../../imgs/".$foto_url['foto']);
                 }
-                if (move_uploaded_file($tmpname, $destino)) {
+                if (move_uploaded_file($tmp_name, $destino)) {
                     $mensaje = "actualizado";
                     $msg = "Producto actualizado exitosamente";
-                    /* header("location: index.php?msg=$msg"); exit; */
                 }
         }
         else
         {
             $mensaje = "existente";
             $msg = "Producto ya existente";
-            /* header("location: index.php?msg=$msg"); exit; */
         }
     }
     else
     { 
         $mensaje = "actualizado";
         $msg = "Producto actualizado exitosamente";
-        /* header("location: index.php?msg=$msg"); exit; */ 
     } 
 
 
     echo json_encode($mensaje);
-
-?>

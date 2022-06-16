@@ -1,154 +1,163 @@
 !function () {
     let items = JSON.parse(localStorage.getItem("carrito")) || []
-    const contador = document.getElementById("contador")
-    const total = document.getElementById("total")
-    const pro_total = document.getElementById("productos_totales")
+    const CONTADOR = document.getElementById("contador")
+    const TOTAL = document.getElementById("total")
+    const PRODUCTOS_TOTALES = document.getElementById("productos_totales")
     let cant_products = null
-    let existeItem = null
+    let existe_Item = null
 
     /* console.log(JSON.parse(localStorage.getItem("carrito"))); */
     window.addEventListener("DOMContentLoaded", main)
 
 
-    async function main() 
-    {
-        mostrarProductos()
-        
-        if (items.length > 0) 
-        {
+    async function main() {
+        mostrar_Productos()
+
+        if (items.length > 0 ||  items.length == 0 ) {
             actualizar_Carrito(items)
-            contador.textContent = items.length
+            CONTADOR.textContent = items.length
         }
 
         deteccion_clicks()
-        getYear()       
+        get_Year()
+
+
+
+        const prueba = document.getElementById("prueba")
+
+        prueba.addEventListener("click", () => 
+        {
+            const items_Almacenados = JSON.parse(localStorage.getItem("carrito"))
+            console.log(items_Almacenados);
+            console.log(items_Almacenados[0]);
+
+            items_Almacenados.forEach((item,i) => 
+                {
+                    fetch("ejemplo.php", 
+                    {
+                        method: "post",
+                        body: JSON.stringify(items_Almacenados[i])
+                    })
+                        .then(rpta => rpta.json())
+                        .then(data => {
+                            console.log("h: " + data);
+                        })
+                })
+ 
+        });
+
+
     }
 
 
-    function getYear() {
+    function get_Year() {
         // Inicio de Obtencion de Año Actual 
-        const $year = document.getElementById("year")
-        const fullYear = new Date().getFullYear()
-        $year.textContent = fullYear
+        const $YEAR = document.getElementById("year")
+        const FULL_YEAR = new Date().getFullYear()
+        $YEAR.textContent = FULL_YEAR
         // Fin de Obtencion de Año Actual    
     }
 
 
-    
 
-    async function mostrarProductos() 
-    {
-        const $contenedor = document.getElementById("contenedor")
-        const $template = document.getElementById("template").content
-        const fragmento = document.createDocumentFragment()
 
-        const rpta = await fetch("../../administrador/producto/items.php")
-        const data = await rpta.json()
-        console.log(data);
-      
-    /*     for (let i = 0; i < 9; i++) 
-        {
-            const clone = $template.cloneNode(true)
-            clone.querySelector(".card").id = i
-            fragmento.appendChild(clone)
-        }
-        $contenedor.appendChild(fragmento) */
+    async function mostrar_Productos() {
+        const $CONTENEDOR = document.getElementById("contenedor")
+        const $TEMPLATE = document.getElementById("template").content
+        const FRAGMENTO = document.createDocumentFragment()
 
-        data.forEach(item => 
-        {
-            const clone = $template.cloneNode(true)
-            clone.querySelector(".card").id = item.idProducto
-            clone.querySelector(".producto").textContent = item.nombre
-            clone.querySelector(".precio").textContent = item.precio 
-            clone.querySelector(".imagen").src = `../imgs/${item.foto}` 
-            fragmento.appendChild(clone)
+        const RPTA = await fetch("../../administrador/producto/items.php")
+        const DATA = await RPTA.json()
+        console.log(DATA);
+  
+        DATA.forEach(item => {
+            const CLONE = $TEMPLATE.cloneNode(true)
+            CLONE.querySelector(".card").id = item.idProducto
+            CLONE.querySelector(".producto").textContent = item.nombre
+            CLONE.querySelector(".precio").textContent = item.precio
+            CLONE.querySelector(".imagen").src = `../imgs/${item.foto}`
+            FRAGMENTO.appendChild(CLONE)
         });
-        $contenedor.appendChild(fragmento)
+        $CONTENEDOR.appendChild(FRAGMENTO)
     }
 
 
     function deteccion_clicks() {
-        const aside = document.getElementById("aside")
+        const ASIDE = document.getElementById("aside")
 
 
         window.addEventListener("click", async e => {
             /* console.log(e.target); */
 
             if (e.target.classList.contains("close")) {
-                aside.style.right = `-${aside.clientWidth + 10}px`
+                ASIDE.style.right = `-${ASIDE.clientWidth + 10}px`
             }
-            else if (e.target.classList.contains("open")) 
-            {
-                aside.style.right = "0"
+            else if (e.target.classList.contains("open")) {
+                ASIDE.style.right = "0"
             }
-            else if (e.target.classList.contains("plus")) 
-            {
+            else if (e.target.classList.contains("plus")) {
                 cant_products = e.target.nextElementSibling
-              
-                const row_id = e.target.parentNode.parentNode.parentNode.parentNode.id
 
-                const info_row = await detalle(row_id)
-                
-                if ( parseInt(cant_products.textContent)  < info_row[0].stock ) 
-                {
-                    cant_products.textContent = parseInt(cant_products.textContent) + 1      
+                const ROW_ID = e.target.parentNode.parentNode.parentNode.parentNode.id
+
+                const INFO_ROW = await detalle(ROW_ID)
+
+                if (parseInt(cant_products.textContent) < INFO_ROW[0].stock) {
+                    cant_products.textContent = parseInt(cant_products.textContent) + 1
                     for (const item of items)
-                        if (item.id == row_id) item.cont += 1
+                        if (item.id == ROW_ID) item.cont += 1
 
                     actualizar_Carrito(items)
 
                     console.log(items);
                 }
-                
+
             }
             else if (e.target.classList.contains("minus")) {
                 cant_products = e.target.previousElementSibling
                 cant_products.textContent = parseInt(cant_products.textContent) - 1
 
-                const row_id = e.target.parentNode.parentNode.parentNode.parentNode.id
+                const ROW_ID = e.target.parentNode.parentNode.parentNode.parentNode.id
 
-                if (cant_products.textContent < 1) 
-                {
-                    items = items.filter(item => item.id != row_id)
+                if (cant_products.textContent < 1) {
+                    items = items.filter(item => item.id != ROW_ID)
                 }
-                else 
-                {
+                else {
                     for (const item of items)
-                        if (item.id == row_id) item.cont -= 1
+                        if (item.id == ROW_ID) item.cont -= 1
                 }
 
                 actualizar_Carrito(items)
 
             }
             else if (e.target.classList.contains("add") || e.target.classList.contains("view")) {
-                const id = e.target.parentNode.parentNode.parentNode.parentNode.id
-                const image = e.target.parentNode.parentNode.previousElementSibling.src
-                const name = e.target.parentNode.previousElementSibling.querySelector(".producto").textContent
-                const price = e.target.parentNode.previousElementSibling.querySelector(".precio").textContent
+                const ID = e.target.parentNode.parentNode.parentNode.parentNode.id
+                const IMAGE = e.target.parentNode.parentNode.previousElementSibling.src
+                const NAME = e.target.parentNode.previousElementSibling.querySelector(".producto").textContent
+                const PRICE = e.target.parentNode.previousElementSibling.querySelector(".precio").textContent
                 // console.log(e.target.parentNode.parentNode.previousElementSibling.src);
 
-                if (e.target.classList.contains("view")) 
-                {
-                    const data = detalle(id)
+                if (e.target.classList.contains("view")) {
+                    const data = detalle(ID)
                     datos_modal(data)
                     return
                 }
 
 
-                if (items.length > 0) existeItem = items.find(item => item.id == id);
+                if (items.length > 0) existe_Item = items.find(item => item.id == ID);
 
-                if (existeItem) return
+                if (existe_Item) return
 
-                const objeto = {
-                    "id": id,
-                    "image": image,
-                    "name": name,
-                    "price": price,
+                const OBJETO = {
+                    "id": ID,
+                    "image": IMAGE,
+                    "name": NAME,
+                    "price": PRICE,
                     "cont": 1
                 }
 
-                items.push(objeto)
-                contador.textContent = items.length
+                items.push(OBJETO)
+                CONTADOR.textContent = items.length
 
                 actualizar_Carrito(items)
             }
@@ -169,27 +178,28 @@
         if (arr.length > 0) {
 
             arr.forEach(item => {
-                const clonar = filaProducto.cloneNode(true)
-                clonar.querySelector(".col-12").id = item.id
-                clonar.querySelector("img").src = item.image
-                clonar.querySelector(".p_name").textContent = item.name
-                clonar.querySelector(".p_price").textContent = item.price
-                clonar.querySelector(".cantidad").textContent = item.cont
-                fragmento.appendChild(clonar)
+                const CLONAR = filaProducto.cloneNode(true)
+                CLONAR.querySelector(".col-12").id = item.id
+                CLONAR.querySelector("img").src = item.image
+                CLONAR.querySelector(".p_name").textContent = item.name
+                CLONAR.querySelector(".p_price").textContent = item.price
+                CLONAR.querySelector(".cantidad").textContent = item.cont
+                fragmento.appendChild(CLONAR)
 
                 productos_total += parseInt(item.cont)
                 guardar_total += parseFloat(item.price) * parseInt(item.cont)
             });
-            
+
             itemsComprados.appendChild(fragmento);
 
-            total.textContent = "S/. " + guardar_total.toFixed(2)
-            pro_total.textContent = productos_total
+            TOTAL.textContent = "S/. " + guardar_total.toFixed(2)
+            PRODUCTOS_TOTALES.textContent = productos_total
+            CONTADOR.textContent = arr.length
         }
-        else
-        {
-            total.textContent = ""
-            pro_total.textContent = ""
+        else {
+            TOTAL.textContent = ""
+            PRODUCTOS_TOTALES.textContent = ""
+            CONTADOR.textContent = 0
         }
 
         guardar_en_Storage(arr);
@@ -197,9 +207,9 @@
 
 
     function limpiar_Carrito() {
-        const itemsComprados = document.getElementById("itemsComprados")
-        while (itemsComprados.firstChild) {
-            itemsComprados.removeChild(itemsComprados.firstChild)
+        const ITEMS_COMPRADOS = document.getElementById("itemsComprados")
+        while (ITEMS_COMPRADOS.firstChild) {
+            ITEMS_COMPRADOS.removeChild(ITEMS_COMPRADOS.firstChild)
         }
     }
 
@@ -208,34 +218,34 @@
         localStorage.setItem("carrito", JSON.stringify(arr))
     }
 
-    
+
     async function detalle(id) {
-        const rpta = await fetch(`../../administrador/producto/detalles.php?id=${id}`)
-        const data = await rpta.json()
-        return data;
+        const RPTA = await fetch(`../../administrador/producto/detalles.php?id=${id}`)
+        const DATA = await RPTA.json()
+        return DATA;
     }
 
     async function datos_modal(obj) {
-        const   img_modal = document.getElementById("img_modal"),
-                title_modal = document.getElementById("title_modal"),
-                price_modal = document.getElementById("price_modal"),
-                description_modal = document.getElementById("description_modal"),
-                presentacion_modal = document.getElementById("presentacion_modal"),
-                stock_modal = document.getElementById("stock_modal")
+        const IMG_MODAL = document.getElementById("img_modal"),
+            TITLE_MODAL = document.getElementById("title_modal"),
+            PRICE_MODAL = document.getElementById("price_modal"),
+            DESCRIPTION_MODAL = document.getElementById("description_modal"),
+            PRESENTACION_MODAL = document.getElementById("presentacion_modal"),
+            STOCK_MODAL = document.getElementById("stock_modal")
 
-        const data = await obj;
-        console.log(data);
+        const DATA = await obj;
+        console.log(DATA);
 
-        console.log(data[0].nombre);
-        console.log(data[0].precio);
+        console.log(DATA[0].nombre);
+        console.log(DATA[0].precio);
 
-        img_modal.src = `../imgs/${data[0].foto}`
-        title_modal.textContent = data[0].nombre
-        description_modal.textContent = data[0].descripcion
-        presentacion_modal.textContent = data[0].PRnombre
-        price_modal.textContent = `Precio: S/. ${data[0].precio}`
-        stock_modal.textContent = `Stock: ${data[0].stock
-}`
+        IMG_MODAL.src = `../imgs/${DATA[0].foto}`
+        TITLE_MODAL.textContent = DATA[0].nombre
+        DESCRIPTION_MODAL.textContent = DATA[0].descripcion
+        PRESENTACION_MODAL.textContent = DATA[0].PRnombre
+        PRICE_MODAL.textContent = `Precio: S/. ${DATA[0].precio}`
+        STOCK_MODAL.textContent = `Stock: ${DATA[0].stock }`
     }
 
+ 
 }();

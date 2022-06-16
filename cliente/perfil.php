@@ -5,7 +5,6 @@ if(!isset($_SESSION['id']) || !isset($_SESSION['rol'])){//verifica si hay logead
 }
 
 require_once "../config/conectar.php";
-//echo $_SESSION['nombre']; contenedor del nombre
 
 $query = "SELECT nombre,apellidos,correo,numero FROM usuario where usuario = '".$_SESSION['id']."'";
 $usuario = mysqli_query($conexion, $query);
@@ -33,15 +32,6 @@ foreach ($usuario as $us) {
     $numero = $us['numero'];
 }
 
-
-// foreach ($usuario_dir as $us_dir) {
-//     $dir = $us_dir['direccion'];
-// }
-// if($dir==null){
-//     echo "vacio";
-// }else{
-//     echo "no vacio";
-// }
 ?>
 
 <!DOCTYPE html>
@@ -141,22 +131,6 @@ foreach ($usuario as $us) {
 
         </div>
     </div>
-
-    
-
-
-
-   
-    
-
-
-
-
-
-
-
-
-
 
 </body>
 </html>

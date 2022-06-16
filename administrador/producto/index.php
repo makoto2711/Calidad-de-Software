@@ -45,27 +45,7 @@ include "../asset/header.php";
                     </tr>
                 </thead>
                 <tbody style="border: 10px #000" id="filas_tabla" >
-                
-                <!--
-                   <?php
-                    $sql = "SELECT p.idProducto,p.nombre as Pnombre,p.descripcion,pr.nombre as PRnombre, p.stock, p.precio, i.foto FROM producto p inner JOIN presentacion pr on p.idPresentacion = pr.idPresentacion inner JOIN imagen i on p.idProducto = i.idProducto where p.estado = 1";
-                    $query = mysqli_query($conexion, $sql);
-                    
-                    while ($data = mysqli_fetch_assoc($query)) { ?>
-                        <tr>
-                            <td><img class="img-thumbnail" src="../../imgs/<?php echo $data['foto']; ?>" width="50"></td>
-                            <td><?php echo $data['Pnombre']; ?></td>
-                            <td><?php echo $data['descripcion']; ?></td>
-                            <td><?php echo $data['PRnombre']; ?></td>
-                            <td><?php echo $data['stock']; ?></td>
-                            <td><?php echo $data['precio']; ?></td>
-                            <td>
-                                <a class="btn btn-warning" href= "editar.php?id=<?php echo $data['idProducto']; ?>"> Editar </a>
-                                <a class="btn btn-danger" href= "eliminar_procesar.php?accion=d&id=<?php echo $data['idProducto']; ?>"> Eliminar </a>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                    -->
+
                 </tbody>
             </table>
 

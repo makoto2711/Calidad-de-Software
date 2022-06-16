@@ -3,12 +3,6 @@ require_once "../../config/conectar.php";
 
 $mensaje = null;
 
-/* if(!isset($_GET['accion']) || $_GET['accion'] != "c"){
-    header("location: ../../index.php");
-}
-else
-{
- */ 
     $nombre = $_POST['nombre'];
     $descripcion = $_POST['descripcion'];
     $cantidad = $_POST['cantidad'];
@@ -26,12 +20,12 @@ else
             VALUES ('$nombre', '$descripcion', $presentacion, $cantidad, $precio)";
     $query = mysqli_query($conexion,$sql);
 
-    $idProd = $conexion->insert_id;
+    $id_prod = $conexion->insert_id;
 
     if ($query) 
     {
 
-        $sql = "INSERT INTO imagen (idProducto, foto) VALUES ('$idProd', '$foto')";
+        $sql = "INSERT INTO imagen (idProducto, foto) VALUES ('$id_prod', '$foto')";
         $query = mysqli_query($conexion, $sql);
 
         if($query){
@@ -48,12 +42,3 @@ else
 
     echo json_encode($mensaje);
 
-/*  
-
-}
-
-
- */
-
-
- ?>

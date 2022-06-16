@@ -77,18 +77,7 @@ if(isset($_SESSION['id'])){//verifica si hay logeado
 
     <main class="container mt-5 pt-5">
         <div class="row" id="contenedor"> 
-            <!--    <div class="card col-lg-4 border-0 ">
-                    <section class="m-3 cuerpo">
-                        <img src="assets/img/lana.png" class="card-img-top border-top" alt="...">
-                        <div class="card-body background">
-                            <h5 class="card-title text-white text-center mb-3"><span class="producto">Lana Azul</span> - S/. <span class="precio">15.00</span></h5>
-                            <div class="text-center">
-                                <a href="#" class="btn boton">Agregar al Carrito</a>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            --> 
+
         </div>
     </main>
 
@@ -114,7 +103,7 @@ if(isset($_SESSION['id'])){//verifica si hay logeado
 
                 <div class="row mt-4">
                     <div class="col-12 text-center">
-                        <button class="btn btn-primary">Comprar</button>
+                        <button class="btn btn-primary" id="prueba" >Comprar</button>
                     </div>
                 </div>
 

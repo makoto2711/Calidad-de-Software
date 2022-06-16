@@ -2,7 +2,6 @@
 session_start();//abre/inicias session
 if(isset($_SESSION['id'])){//verifica si hay logeado
     if(isset($_SESSION['rol'])){
-      /*   echo $_SESSION['rol']; */
         switch($_SESSION['rol']){
             case 1:
                 header("location: administrador/dashboard.php");
@@ -27,7 +26,6 @@ require_once "config/conectar.php";
 if(isset($_POST['login'])){
     $user = $_POST['id'];
     $pass = $_POST['pass'];
-       /*  echo $user; */
     $sql = "SELECT idUsuario,usuario,contraseña,nombre,idRol from usuario where usuario = '$user'";
     $resultado = mysqli_query($conexion,$sql);
     $num = mysqli_num_rows($resultado);
@@ -45,7 +43,6 @@ if(isset($_POST['login'])){
             $_SESSION['rol'] = $row['idRol'];//guardas variable en la sessiion
             
             if(isset($_SESSION['rol'])){
-            /*     echo $_SESSION['rol']; */
                 switch($_SESSION['rol']){
                     case 1:
                         header("location: administrador/dashboard.php");
@@ -70,7 +67,6 @@ if(isset($_POST['login'])){
         
     }else{
         $_SESSION['msg_log'] = "Usuario incorrecto";
-        //echo "No existe usuario";
     }
 }
 ?>

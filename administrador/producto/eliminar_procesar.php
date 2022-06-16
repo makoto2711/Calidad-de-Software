@@ -10,12 +10,7 @@ else
     $sql = "UPDATE producto SET estado = 0 WHERE idProducto = $id";
     $query = mysqli_query($conexion, $sql);
     if ($query) {
-        $msg = "Producto eliminado exitosamente";//cambiar por alerta JS
+        $msg = "Producto eliminado exitosamente";
         echo json_encode($msg);
     }
 }
-
-
-
-
-?>

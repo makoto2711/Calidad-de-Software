@@ -9,6 +9,5 @@ $numero = $_POST['numero'];
 $query = "UPDATE usuario set nombre = '$nombre', apellidos = '$apellido', numero = '$numero' where idUsuario=$id ";
 $sql = mysqli_query($conexion,$query);
 
-header("location: perfil.php"); exit;
-
-?>
+header("location: perfil.php"); 
+exit;
