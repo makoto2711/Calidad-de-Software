@@ -68,54 +68,66 @@
 
 
         item.addEventListener("click", () => {
-            const items_Almacenados = JSON.parse(localStorage.getItem("carrito"))
-            
+           
+            if (dire.value != 0) 
+            {
+                const items_Almacenados = JSON.parse(localStorage.getItem("carrito"))
 
-            console.log(items_Almacenados);
-            console.log(items_Almacenados[0]);
 
-            console.log({
-                "items": JSON.stringify(items_Almacenados),
-                "direccion": dire.value
-            });
+                console.log(items_Almacenados);
+                console.log(items_Almacenados[0]);
 
-            fetch("../../cliente/registrar_compra.php",
-                {
-                    method: "post",
-                    body: {
-                        "items": JSON.stringify(items_Almacenados),
-                        "direccion": dire.value
-                    }
+                const amount = items_Almacenados.reduce((total, item) => total + item.price * item.cont, 0)
+
+                console.log({
+                    "items": JSON.stringify(items_Almacenados),
+                    "direccion": dire.value
+                });
+
+                fetch("../../cliente/registrar_compra.php",
+                    {
+                        method: "post",
+                        body: JSON.stringify({
+                            "items": items_Almacenados,
+                            "dire": dire.value,
+                            "total": amount
+                        }),
+
+                    })
+                    .then(rpta => rpta.json())
+                    .then(data => {
+                        console.log("h: " + data);
+                        if (data == "No estas logueado") {
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Debes Iniciar Sesión para realizar tu compra!',
+
+                                showDenyButton: true,
+                                confirmButtonText: 'Login',
+                                denyButtonText: `Cerrar`,
+                            })
+                                .then((result) => {
+                                    /* Read more about isConfirmed, isDenied below */
+                                    if (result.isConfirmed) {
+                                        location.href = "/login.php"
+                                    }
+                                })
+
+                        }
+
+
+                    })    
+            }
+            else
+            {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Escoger una dirección!', 
                 })
-                .then(rpta => rpta.json())
-                .then(data => {
-                    console.log("h: " + data);
-
-                    if (data == "No estas logueado") {
-
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Debes Iniciar Sesión para realizar tu compra!',
-
-                            showDenyButton: true,
-                            confirmButtonText: 'Login',
-                            denyButtonText: `Cerrar`,
-                        }).then((result) => {
-                            /* Read more about isConfirmed, isDenied below */
-                            if (result.isConfirmed) {
-                                location.href = "/login.php"
-                            }
-                        })
-
-
-
-
-
-                    }
-
-
-                })
+            }
 
 
         });
@@ -171,14 +183,16 @@
             else if (e.target.classList.contains("open")) {
                 ASIDE.style.right = "0"
             }
-            else if (e.target.classList.contains("plus")) {
+            else if (e.target.classList.contains("plus")) 
+            {
                 cant_products = e.target.nextElementSibling
 
                 const ROW_ID = e.target.parentNode.parentNode.parentNode.parentNode.id
-
                 const INFO_ROW = await detalle(ROW_ID)
+ 
 
-                if (parseInt(cant_products.textContent) < INFO_ROW[0].stock) {
+                if (parseInt(cant_products.textContent) < INFO_ROW[0].stock) 
+                {
                     cant_products.textContent = parseInt(cant_products.textContent) + 1
                     for (const item of items)
                         if (item.id == ROW_ID) item.cont += 1
@@ -188,6 +202,34 @@
                     console.log(items);
                 }
 
+
+
+          
+                    items.forEach(item => {
+
+                        if (item.id == ROW_ID) {
+                            console.log(item);
+                            fetch("../../cliente/registrar_carrito.php",
+                                {
+                                    method: "POST",
+                                    body: JSON.stringify({
+                                        "id": item.id,
+                                        "cont": item.cont
+                                    })
+                                })
+                                .then(data => data.json())
+                                .then((result) => {
+                                    console.log(result);
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                });
+                        }
+
+                    }) 
+
+
+
             }
             else if (e.target.classList.contains("minus")) {
                 cant_products = e.target.previousElementSibling
@@ -195,7 +237,35 @@
 
                 const ROW_ID = e.target.parentNode.parentNode.parentNode.parentNode.id
 
-                if (cant_products.textContent < 1) {
+                let s_id, s_cont, s_comprobar = false
+
+
+
+                items.forEach(item => {
+                    if (item.id == ROW_ID) {
+                        console.log(item);
+                        fetch("../../cliente/registrar_carrito.php",
+                            {
+                                method: "POST",
+                                body: JSON.stringify({
+                                    "id": item.id,
+                                    "cont": cant_products.textContent
+                                })
+                            })
+                            .then(data => data.json())
+                            .then((result) => {
+                                console.log(result);
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                    }
+                })
+
+             
+
+                if (cant_products.textContent < 1) 
+                {
                     items = items.filter(item => item.id != ROW_ID)
                 }
                 else {
@@ -205,6 +275,12 @@
 
                 actualizar_Carrito(items)
 
+
+
+
+                
+                
+
             }
             else if (e.target.classList.contains("add") || e.target.classList.contains("view")) {
                 const ID = e.target.parentNode.parentNode.parentNode.parentNode.id
@@ -213,14 +289,17 @@
                 const PRICE = e.target.parentNode.previousElementSibling.querySelector(".precio").textContent
                 // console.log(e.target.parentNode.parentNode.previousElementSibling.src);
 
+ 
+
                 if (e.target.classList.contains("view")) {
                     const data = detalle(ID)
                     datos_modal(data)
                     return
                 }
 
-
-                if (items.length > 0) existe_Item = items.find(item => item.id == ID);
+                
+                if (items.length > 0)  existe_Item = items.find(item => item.id == ID);
+                
 
                 if (existe_Item) return
 
@@ -235,7 +314,39 @@
                 items.push(OBJETO)
                 CONTADOR.textContent = items.length
 
+            
+
                 actualizar_Carrito(items)
+            
+            
+
+                if (items.length > 0) {
+                    items.forEach(item => {
+
+                        if (item.id == ID) {
+                            console.log(item);
+                            fetch("../../cliente/registrar_carrito.php",
+                                {
+                                    method: "POST",
+                                    body: JSON.stringify({
+                                        "id": item.id,
+                                        "cont": item.cont
+                                    })
+                                })
+                                .then(data => data.json())
+                                .then((result) => {
+                                    console.log(result);
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                });
+                        }
+
+                    })
+                } 
+
+
+            
             }
 
         });

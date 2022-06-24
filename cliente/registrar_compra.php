@@ -5,17 +5,28 @@ require_once "../config/conectar.php";
 
 $msg = "ERROR";
 
-if(isset($_SESSION['id']) || isset($_SESSION['rol']) && $_SESSION['rol'] != 3 ){//verifica si hay logeado
+if(isset($_SESSION['id']) || isset($_SESSION['rol']) && $_SESSION['rol'] == 3 ){//verifica si hay logeado
   
     $input = json_decode(file_get_contents('php://input'), true);
     $idUser = $_SESSION['idUser'];
 
-    $query = "INSERT into compra_cabecera (idUsuario) values ('$idUser')";
+    $productos = $input['items'];
+    $direccion = $input['dire'];
+    $total = $input['total'];
+
+
+    $query = "INSERT into compra_cabecera (idUsuario,idDireccion,valTotal) values ('$idUser','$direccion','$total')";
     $sql = mysqli_query($conexion,$query);
+    if(!$sql){
+        $msg = "Error al insertar cabecera";
+    }
+    else{
+        $msg = "Compra registrada";
+    }
 
     $id_compra = $conexion->insert_id;
 
-    foreach($input as $i){
+    foreach($productos as $i){
         
         $idProd = $i['id'];
         $cantProd = $i['cont'];
@@ -25,7 +36,7 @@ if(isset($_SESSION['id']) || isset($_SESSION['rol']) && $_SESSION['rol'] != 3 ){
 
     }
 
-    $msg = "Compra registrada";
+    
 }
 else{
     $msg = "No estas logueado";

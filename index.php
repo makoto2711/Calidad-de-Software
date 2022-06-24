@@ -218,7 +218,8 @@ if(isset($_SESSION['id'])){//verifica si hay logeado
                 </div>
                 <div class="text-center mt-4" >
                     <p>Si realiza el pago con otro nombre, por favor deja un comentario con el nombre con el que se registro en la web.</p>
-                    <a href="#" class="btn btn-warning" id="validar" >Confirmar pago</a>
+                    <a href="#" class="btn btn-warning" id="validar"  >Confirmar pago</a>
+                    
                 </div>
             </section>
       </div>
