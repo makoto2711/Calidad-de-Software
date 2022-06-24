@@ -1,5 +1,7 @@
 !function () {
     let items = JSON.parse(localStorage.getItem("carrito")) || []
+    const dire = document.getElementById("dire")
+    const validar = document.getElementById("validar")
     const CONTADOR = document.getElementById("contador")
     const TOTAL = document.getElementById("total")
     const PRODUCTOS_TOTALES = document.getElementById("productos_totales")
@@ -9,8 +11,35 @@
     /* console.log(JSON.parse(localStorage.getItem("carrito"))); */
     window.addEventListener("DOMContentLoaded", main)
 
+    
 
-    async function main() {
+    async function obtener_direccions() 
+    {
+        fetch("../../cliente/listado_direcciones.php")
+        .then(data => data.json())
+        .then((r) => 
+        {
+            console.log(r);    
+
+            r.forEach(item => 
+            {
+                dire.innerHTML += `<option value="${item.id}" >  ${item.direccion}</option>`
+            })
+
+
+        })
+        .catch((err) => 
+        {
+            console.log(err);
+        });    
+    }
+
+    obtener_direccions() 
+
+
+
+    async function main() 
+    {
         mostrar_Productos()
 
         if (items.length > 0 ||  items.length == 0 ) {
@@ -23,31 +52,78 @@
 
 
 
-        const prueba = document.getElementById("prueba")
+        const PRUEBA = document.getElementById("prueba")
 
-        prueba.addEventListener("click", () => 
-        {
+        detectar_clicks(validar)
+
+      
+
+    }
+
+
+
+    async function detectar_clicks(item) 
+    {
+        
+
+
+        item.addEventListener("click", () => {
             const items_Almacenados = JSON.parse(localStorage.getItem("carrito"))
+            
+
             console.log(items_Almacenados);
             console.log(items_Almacenados[0]);
 
-            items_Almacenados.forEach((item,i) => 
+            console.log({
+                "items": JSON.stringify(items_Almacenados),
+                "direccion": dire.value
+            });
+
+            fetch("../../cliente/registrar_compra.php",
                 {
-                    fetch("ejemplo.php", 
-                    {
-                        method: "post",
-                        body: JSON.stringify(items_Almacenados[i])
-                    })
-                        .then(rpta => rpta.json())
-                        .then(data => {
-                            console.log("h: " + data);
-                        })
+                    method: "post",
+                    body: {
+                        "items": JSON.stringify(items_Almacenados),
+                        "direccion": dire.value
+                    }
                 })
- 
+                .then(rpta => rpta.json())
+                .then(data => {
+                    console.log("h: " + data);
+
+                    if (data == "No estas logueado") {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Debes Iniciar Sesión para realizar tu compra!',
+
+                            showDenyButton: true,
+                            confirmButtonText: 'Login',
+                            denyButtonText: `Cerrar`,
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                location.href = "/login.php"
+                            }
+                        })
+
+
+
+
+
+                    }
+
+
+                })
+
+
         });
-
-
     }
+
+
+
+
 
 
     function get_Year() {

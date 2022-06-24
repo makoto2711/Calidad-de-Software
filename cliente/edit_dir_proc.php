@@ -1,13 +1,22 @@
 <?php
 require_once "../config/conectar.php";
 
-$id = $_GET['id'];
+$id = $_POST['id'];
 $distrito = $_POST['distrito'];
 $direccion = $_POST['direccion'];
 $referencia = $_POST['referencia'];
 
+$mensaje = null;
+
+
 $query = "UPDATE direccion set idDistrito = '$distrito', direccion = '$direccion', referencia = '$referencia' where id=$id ";
 $sql = mysqli_query($conexion,$query);
 
-header("location: perfil.php"); 
-exit;
+
+if ($sql) 
+{
+    $mensaje = "exito";
+}
+
+
+echo json_encode($mensaje);

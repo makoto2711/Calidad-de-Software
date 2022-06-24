@@ -43,7 +43,7 @@ foreach ($usuario as $us) {
     <title>Perfil Usuario</title>
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-   
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         label 
         {
@@ -100,9 +100,11 @@ foreach ($usuario as $us) {
 
 
 
-            <div class="col-lg-3 text-center mt-4">
+            <div class="col-lg-3 text-center mt-4" >
                  <h2>Direccion</h2>
-                <?php foreach ($usuario_dir as $us_dir) { 
+           
+                 <section id="contenedor_Cerrado">
+                         <?php foreach ($usuario_dir as $us_dir) { 
                     if($us_dir['direccion'] != null){?>
                     
                     <section class="mt-4 text-start " >
@@ -122,6 +124,10 @@ foreach ($usuario as $us) {
                     </section>                    
 
                     <?php } } ?>
+                 </section>
+
+
+
                 <form action="registrar_direccion.php" class="mt-5" method="post">
                     <input value="<?php echo $_SESSION['idUser'] ?>" name="user" hidden>
                     <input class="btn btn-primary" type="submit" value="Añadir dirección">
@@ -131,6 +137,65 @@ foreach ($usuario as $us) {
 
         </div>
     </div>
+
+
+
+    <script>
+
+            document.addEventListener("DOMContentLoaded", (e)=> 
+            {
+
+                const contenedor_Cerrado = document.getElementById("contenedor_Cerrado")
+
+                contenedor_Cerrado.addEventListener("click", (e)=>
+                {
+                   e.preventDefault()
+                    
+                   console.log(e.target);
+
+                    if (e.target.classList.contains("btn-danger")) 
+                    {
+ 
+
+                        Swal.fire({
+                            title: 'Seguro que quieres eliminar este registro?',
+                            showDenyButton: true, 
+                            confirmButtonText: 'Aceptar',
+                            denyButtonText: `Cancelar`,
+                        })
+                        .then((result) => 
+                        {
+                           if (result.isConfirmed) 
+                           {
+                                fetch(e.target.href)
+                                .then(data => data.json() )
+                                .then((r) => 
+                                {
+                                    if (r == "eliminado")  
+                                    {
+                                        Swal.fire('Se elimino correctamente!', '', 'success')
+                                        e.target.parentNode.parentNode.remove()
+                                    }     
+                                })
+                                .catch((err) => 
+                                {
+                                    console.log(err);    
+                                });
+                           } 
+                        })            
+                    }
+                    else if( e.target.classList.contains("btn-warning") )
+                    {
+                        location.href = e.target.href
+                    }
+
+
+                })
+            })
+
+    </script>
+
+
 
 </body>
 </html>

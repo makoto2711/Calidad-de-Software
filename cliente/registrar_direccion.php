@@ -19,7 +19,7 @@ require_once "../config/conectar.php";
 	crossorigin="anonymous"></script>
 	   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-   
+     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -31,7 +31,7 @@ require_once "../config/conectar.php";
 	<div class="row justify-content-center">
 		<div class="col-6">
 			
-				<form action="reg_dir_proc.php?user=<?php echo $_POST['user'] ?>" method="post" >
+				<form action="reg_dir_proc.php" id="form"  method="post" >
 					<label>Departamento: </label> 
 					<select id="selDepartamento" class="form-select" name="departamento" required>
 						<option value="0"> - Seleccione - </option>
@@ -57,7 +57,10 @@ require_once "../config/conectar.php";
 					<br>
 					<label>Referencia: </label>
 					<input type="text" class="form-control" name="referencia" placeholder="Cerca de.., Enfrente de.." >
-					
+							
+					<input type="text"  value="<?php echo $_POST['user'] ?>"  hidden name="user"  >
+
+
 					<div class="text-center mt-3">
 						<input type="submit" class="btn btn-success w-100 fw-bold" value="Registrar">
 					</div>
@@ -67,7 +70,47 @@ require_once "../config/conectar.php";
 	</div>
 </div>
 
-			
+
+
+<script>
+
+const form = document.getElementById("form")
+
+form.addEventListener("submit", (e)=> 
+{
+	e.preventDefault()
+
+	const formD = new FormData(form)
+
+	fetch(form.action, {
+		method: "POST",
+		body: formD
+	})
+	.then(data => data.json())
+	.then((r) => 
+	{
+		if (r == "exito") 
+			{ 
+				Swal.fire(
+							'Exito!',
+							'Actualizaste Correctamente!',
+							'success'
+							)	
+			}
+	})
+	.catch((err) => {
+		
+	});
+
+
+
+
+})
+
+
+</script>
+
+
 
 
 </body>

@@ -23,7 +23,7 @@ $usuario = mysqli_query($conexion, $query);
     <title>Editar datos</title>
     	   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-   
+   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     
@@ -35,7 +35,7 @@ $usuario = mysqli_query($conexion, $query);
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-lg-6">
-                <form action="edit_dat_proc.php?id=<?php echo $id ?>" method="post">
+                <form action="edit_dat_proc.php" id="form"  method="post">
                 <?php foreach ($usuario as $us){ ?> 
                     <label>Nombres: </label>
                     <input class="form-control" type="text" value="<?php echo $us['nombre'] ?>" name="nombre" required>
@@ -51,6 +51,8 @@ $usuario = mysqli_query($conexion, $query);
                     <input class="form-control" type="number" value="<?php echo $us['numero'] ?>" name="numero" required>
                     <br>
 
+                    <input type="text" hidden  value="<?php echo $id ?>"    name="id" >
+
                     <div class="text-center">
                         <input type="submit" class="btn btn-success w-100" value="Guardar">
                     </div>
@@ -61,6 +63,48 @@ $usuario = mysqli_query($conexion, $query);
         </div>
     </div>
 </div>
+
+
+<script>
+
+
+    const form = document.getElementById("form")
+
+    form.addEventListener("submit", e => 
+    {
+        e.preventDefault()
+
+        const formD = new FormData(form)
+
+        fetch(form.action, {
+            method: "POST",
+            body: formD
+        })
+        .then(data => data.json())
+        .then((r) => 
+        {
+           
+            if (r == "actualizado") 
+            {
+                Swal.fire(
+                    'Exito!',
+                    'Actualizaste Correctamente!',
+                    'success'
+                    )    
+            }
+
+            
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
+
+
+    })
+
+
+</script>
 
 
 

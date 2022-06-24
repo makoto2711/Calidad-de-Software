@@ -36,9 +36,10 @@ foreach ($direccion as $d){
 	src="https://code.jquery.com/jquery-3.3.1.min.js"
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	crossorigin="anonymous"></script>
-	  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-   
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
 
@@ -51,7 +52,7 @@ foreach ($direccion as $d){
 	<div class="row justify-content-center">
 		<div class="col-6">
 
-			<form action="edit_dir_proc.php?id=<?php echo $id ?>" method="post">
+	<form action="edit_dir_proc.php" id="form" method="post">
 		<label>Departamento </label> 
 		<select id="selDepartamento" class="form-select" name="departamento" required>
 			<option value="0"> - Seleccione - </option>
@@ -89,6 +90,9 @@ foreach ($direccion as $d){
 		<input type="text" class="form-control" value="<?php echo $referencia ?>" name="referencia" required>
 		<br>
 		
+		<input type="text" value="<?php echo $id ?>" hidden name="id"  >
+
+
 		<div class="mt-3">
 			<input class="w-100 btn btn-success"  type="submit" value="Guardar">
 		</div>
@@ -99,7 +103,41 @@ foreach ($direccion as $d){
 	</div>
 </div>		
 
-	 
+
+	<script>
+
+		const form = document.getElementById("form")
+		form.addEventListener("submit", (e)=> 
+		{
+			e.preventDefault()
+
+			const formD = new FormData(form)
+
+			fetch(form.action, {
+				method:"POST",
+				body: formD
+			})
+			.then(data => data.json())
+			.then((r) => 
+			{
+				if (r == "exito") 
+				{
+					   Swal.fire(
+								'Exito!',
+								'Actualizaste Correctamente!',
+								'success'
+								)   	
+				}
+			}).catch((err) => {
+				
+			});
+
+
+		})
+
+
+	</script>
+
 
 
 

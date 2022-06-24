@@ -10,6 +10,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/main.css">
@@ -103,7 +104,10 @@ if(isset($_SESSION['id'])){//verifica si hay logeado
 
                 <div class="row mt-4">
                     <div class="col-12 text-center">
-                        <button class="btn btn-primary" id="prueba" >Comprar</button>
+                        <button class="btn btn-primary"  
+                        <?php if(isset($_SESSION['id'])) { ?>  
+                                data-bs-toggle="modal" data-bs-target="#exampleModal"   <?php    } ?>;  id="prueba" >Comprar</button>
+                          
                     </div>
                 </div>
 
@@ -191,6 +195,40 @@ if(isset($_SESSION['id'])){//verifica si hay logeado
     </div>
   </div>
 
+
+
+ 
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content"> 
+      <div class="modal-body">
+            <section>
+                <div>
+                    <img  class="w-100" height="400"  src="./imgs/yape.jpeg"  alt="">
+                </div>
+                <div>
+                
+                    <label class="my-2" for="dire"><strong>Ingresa una dirección para el envio</strong></label>
+
+                    <select  class="form-select"  name="dire" id="dire">
+                        <option value="0">Escoja una dirección</option>
+                    </select>
+                </div>
+                <div class="text-center mt-4" >
+                    <p>Si realiza el pago con otro nombre, por favor deja un comentario con el nombre con el que se registro en la web.</p>
+                    <a href="#" class="btn btn-warning" id="validar" >Confirmar pago</a>
+                </div>
+            </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+<!--         <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
 
 
 </body>

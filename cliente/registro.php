@@ -7,6 +7,7 @@
   <title>Registro</title>
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -14,10 +15,7 @@
 <?php
  include 'registro_procesar.php' 
  ?>
-
-    <?php if(!empty($message)): ?>
-      <p> <?= $message ?></p>
-    <?php endif; ?>
+ 
 
   <div class="container">
 
@@ -35,7 +33,7 @@
 
         <div class="col-lg-6">
   
-    <form class="mt-4" action="" method="POST">
+    <form class="mt-4" action="" id="form" method="POST">
         
         <input class="form-control" name="user" type="text" placeholder="Usuario" minlength="6" required><br>
         <input class="form-control" name="pass" type="password" placeholder="Contraseña" minlength="6" required><br>
@@ -50,6 +48,63 @@
         </div>
     </div>
   </div>
+
+
+
+  <script>
+
+      const FORM = document.getElementById("form")
+
+      FORM.addEventListener("submit", e => 
+      {
+          e.preventDefault()
+
+          const DATA_F = new FormData(FORM)
+
+          fetch("registro_procesar.php", 
+          {
+            method: "POST",
+            body: DATA_F
+          })
+          .then(data => data.json() )
+          .then((result) => {
+            
+            switch (result) 
+            {
+              case "usuario repetido":
+                Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Usuario repetido!',
+                      })
+              break;
+              case "email repetido":
+                   Swal.fire({
+                        icon: 'error',
+                        title:'Oops...',
+                        text: 'Email repetido!',
+                      })
+              break;
+              default:
+                Swal.fire(
+                      'Exito!',
+                      'Te registraste correctamente!',
+                      'success'
+                    )
+                break;
+            }
+
+
+          }).catch((err) => {
+            console.log(err);
+          });
+        
+
+
+      })
+      
+
+  </script>
 
 
 </body>
