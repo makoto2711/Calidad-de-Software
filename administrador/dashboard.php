@@ -104,7 +104,10 @@ while ($q = mysqli_fetch_assoc($query_aprobados)) {
 
                         <div class="col-5">
                             <div class="card text-white bg-primary mb-3  w-100 ">
-                                <div class="card-header"><h6>USUARIOS:</h6></div>
+                                <div class="card-header"> 
+                                    <h6 class="d-flex align-items-center">
+                                        <img class="me-2" style="filter: invert(1);" src="../imgs/user.svg" width="20" height="20" alt=""> USUARIOS:</h6>
+                                </div>
                                 <div class="card-body text-center">
                                     <h5 class="card-title"><?php echo $cant_usu ?></h5>
                                 </div>
@@ -114,7 +117,9 @@ while ($q = mysqli_fetch_assoc($query_aprobados)) {
 
                         <div class="col-5">
                             <div class="card text-white bg-secondary mb-3  w-100 ">
-                                <div class="card-header"><h6>VENTAS CERRADAS ULTIMOS 30 DÍAS:</h6></div>
+                                <div class="card-header">
+                                    <h6 class="d-flex align-items-center">
+                                        <img class="me-2" style="filter: invert(1);" src="../imgs/bien.svg" width="20" height="20" alt=""> VENTAS CERRADAS ULTIMOS 30 DÍAS:</h6></div>
                                 <div class="card-body text-center">
                                     <h5 class="card-title"><?php echo $cant_cerrados ?></h5>
                                 </div>
@@ -125,7 +130,9 @@ while ($q = mysqli_fetch_assoc($query_aprobados)) {
 
                         <div class="col-5">
                             <div class="card text-white bg-dark mb-3  w-100 ">
-                                <div class="card-header"><h6>VENTAS APROBADAS EN ESPERA DE ENVÍO: </h6></div>
+                                <div class="card-header"><h6 class="d-flex align-items-center">
+                                    <img class="me-2" style="filter: invert(1);" src="../imgs/espera.svg" width="20" height="20" alt=""> VENTAS APROBADAS EN ESPERA DE ENVÍO: </h6>
+                                </div>
                                 <div class="card-body text-center">
                                     <h5 class="card-title"><?php echo $cant_aprobados ?></h5>
                                 </div>
@@ -135,7 +142,9 @@ while ($q = mysqli_fetch_assoc($query_aprobados)) {
 
                         <div class="col-5">
                             <div class="card text-white bg-success mb-3  w-100 ">
-                                <div class="card-header"><h6>VENTAS PENDIENTES DE APROBACIÓN: </h6></div>
+                                <div class="card-header"><h6 class="d-flex align-items-center">
+                                   <img class="me-2" style="filter: invert(1);" src="../imgs/reloj.svg" width="20" height="20" alt=""> VENTAS PENDIENTES DE APROBACIÓN: </h6>
+                                </div>
                                 <div class="card-body text-center">
                                     <h5 class="card-title"><?php  echo $cant_pendientes ?></h5>
                                 </div>

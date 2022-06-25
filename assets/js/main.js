@@ -238,7 +238,7 @@
 
                 if (parseInt(cant_products.textContent) < INFO_ROW[0].stock) 
                 {
-                    cant_products.textContent = parseInt(cant_products.textContent) + 1
+                    cant_products.textContent = parseInt(cant_products.textContent + 1)
                     for (const item of items)
                         if (item.id == ROW_ID) item.cont += 1
 
@@ -250,7 +250,8 @@
 
 
           
-                    items.forEach(item => {
+                    items.forEach(item => 
+                        {
 
                         if (item.id == ROW_ID) {
                             console.log(item);
