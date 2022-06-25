@@ -55,7 +55,7 @@ if(isset($_SESSION['id'])){//verifica si hay logeado
                    <a class="btn p-0" href="cliente/perfil.php">Mi perfil</a>
                </li> 
                <li class="list-group-item">
-                   <a class="btn p-0" href="logout.php">Cerrar sesion</a>
+                   <a class="btn p-0" id="cerrar_sesion" href="logout.php">Cerrar sesion</a>
                </li> 
             </ul>
             
@@ -224,7 +224,7 @@ if(isset($_SESSION['id'])){//verifica si hay logeado
             </section>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" id="Cerrar" data-bs-dismiss="modal">Cerrar</button>
 <!--         <button type="button" class="btn btn-primary">Save changes</button> -->
       </div>
     </div>

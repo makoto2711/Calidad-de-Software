@@ -1,7 +1,25 @@
 !function () {
+
+
+
+    async function traer_db_carrito() {
+        fetch("../../cliente/cargar_carrito.php")
+            .then(data => data.json())
+            .then(r => {
+              
+                if (r.length > 0) 
+                {
+                    guardar_en_Storage(r)
+                }
+
+            })
+    }
+
     let items = JSON.parse(localStorage.getItem("carrito")) || []
-    const dire = document.getElementById("dire")
-    const validar = document.getElementById("validar")
+    const DIRE = document.getElementById("dire")
+    const CERRAR = document.getElementById("Cerrar")
+    const VALIDAR = document.getElementById("validar")
+    const cerrar_sesion = document.getElementById("cerrar_sesion")
     const CONTADOR = document.getElementById("contador")
     const TOTAL = document.getElementById("total")
     const PRODUCTOS_TOTALES = document.getElementById("productos_totales")
@@ -23,7 +41,7 @@
 
             r.forEach(item => 
             {
-                dire.innerHTML += `<option value="${item.id}" >  ${item.direccion}</option>`
+                DIRE.innerHTML += `<option value="${item.id}" >  ${item.direccion}</option>`
             })
 
 
@@ -35,6 +53,8 @@
     }
 
     obtener_direccions() 
+
+
 
 
 
@@ -54,10 +74,19 @@
 
         const PRUEBA = document.getElementById("prueba")
 
-        detectar_clicks(validar)
+        detectar_clicks(VALIDAR)
 
       
+            if (cerrar_sesion) 
+            {
 
+                cerrar_sesion.addEventListener("click", () => {
+                    window.localStorage.clear()
+                })    
+            }
+
+
+        traer_db_carrito()
     }
 
 
@@ -69,7 +98,7 @@
 
         item.addEventListener("click", () => {
            
-            if (dire.value != 0) 
+            if (DIRE.value != 0) 
             {
                 const items_Almacenados = JSON.parse(localStorage.getItem("carrito"))
 
@@ -81,7 +110,7 @@
 
                 console.log({
                     "items": JSON.stringify(items_Almacenados),
-                    "direccion": dire.value
+                    "direccion": DIRE.value
                 });
 
                 fetch("../../cliente/registrar_compra.php",
@@ -89,7 +118,7 @@
                         method: "post",
                         body: JSON.stringify({
                             "items": items_Almacenados,
-                            "dire": dire.value,
+                            "dire": DIRE.value,
                             "total": amount
                         }),
 
@@ -97,7 +126,8 @@
                     .then(rpta => rpta.json())
                     .then(data => {
                         console.log("h: " + data);
-                        if (data == "No estas logueado") {
+                        if (data == "No estas logueado") 
+                        {
 
                             Swal.fire({
                                 icon: 'error',
@@ -116,7 +146,22 @@
                                 })
 
                         }
+                        else if (data == "Compra registrada")
+                        {
+                            CERRAR.click()
+                            Swal.fire(
+                                'Compra exitosa!',
+                                'En breve nos comunicaremos con usted!',
+                                'success'
+                            )
+                                .then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.localStorage.clear()
+                                        location.reload()
+                                    }
+                                })
 
+                        }    
 
                     })    
             }

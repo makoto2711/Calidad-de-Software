@@ -17,8 +17,12 @@ if(isset($_SESSION['id']) || isset($_SESSION['rol']) && $_SESSION['rol'] == 3 ){
 
     $query = "INSERT into compra_cabecera (idUsuario,idDireccion,valTotal) values ('$idUser','$direccion','$total')";
     $sql = mysqli_query($conexion,$query);
+    
+    $query = "DELETE FROM carrito where idUsuario=$idUser";
+    $sql = mysqli_query($conexion,$query);
     if(!$sql){
         $msg = "Error al insertar cabecera";
+        
     }
     else{
         $msg = "Compra registrada";
